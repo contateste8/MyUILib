@@ -11,99 +11,90 @@ function MyUILib:CreateWindow(config)
 	local MainFrame = Instance.new("Frame", ScreenGui)
 	MainFrame.Size = UDim2.new(0, 500, 0, 350)
 	MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175)
-	MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 	MainFrame.BorderSizePixel = 0
 	MainFrame.Name = "MainFrame"
 	MainFrame.Active = true
 	MainFrame.Draggable = true
-	MainFrame.BackgroundTransparency = 0.1
-	MainFrame.ClipsDescendants = true
 
 	local UICorner = Instance.new("UICorner", MainFrame)
-	UICorner.CornerRadius = UDim.new(0, 8)
+	UICorner.CornerRadius = UDim.new(0, 10)
 
-	local TopBar = Instance.new("Frame", MainFrame)
-	TopBar.Size = UDim2.new(1, 0, 0, 35)
-	TopBar.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-	TopBar.BorderSizePixel = 0
-	TopBar.Name = "TopBar"
+	-- Título
+	local TitleBar = Instance.new("Frame", MainFrame)
+	TitleBar.Size = UDim2.new(1, 0, 0, 40)
+	TitleBar.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	TitleBar.BorderSizePixel = 0
+	TitleBar.Name = "TitleBar"
 
-	local TopCorner = Instance.new("UICorner", TopBar)
-	TopCorner.CornerRadius = UDim.new(0, 8)
-
-	local Title = Instance.new("TextLabel", TopBar)
-	Title.Size = UDim2.new(1, -70, 1, 0)
+	local Title = Instance.new("TextLabel", TitleBar)
+	Title.Size = UDim2.new(1, -80, 1, 0)
 	Title.Position = UDim2.new(0, 10, 0, 0)
-	Title.Text = config.Title or "MyUILib"
-	Title.TextColor3 = Color3.new(1, 1, 1)
-	Title.Font = Enum.Font.GothamBold
-	Title.TextSize = 18
 	Title.BackgroundTransparency = 1
+	Title.Text = config.Name or "My UI"
+	Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Title.Font = Enum.Font.SourceSansBold
+	Title.TextSize = 22
 	Title.TextXAlignment = Enum.TextXAlignment.Left
 
-	local Close = Instance.new("TextButton", TopBar)
-	Close.Size = UDim2.new(0, 30, 1, 0)
-	Close.Position = UDim2.new(1, -30, 0, 0)
-	Close.Text = "X"
-	Close.TextColor3 = Color3.new(1, 0.3, 0.3)
-	Close.BackgroundTransparency = 1
-	Close.Font = Enum.Font.GothamBold
-	Close.TextSize = 18
-	Close.MouseButton1Click:Connect(function()
-		ScreenGui:Destroy()
-	end)
-
-	local Minimize = Instance.new("TextButton", TopBar)
+	local Minimize = Instance.new("TextButton", TitleBar)
 	Minimize.Size = UDim2.new(0, 30, 1, 0)
 	Minimize.Position = UDim2.new(1, -60, 0, 0)
-	Minimize.Text = "-"
-	Minimize.TextColor3 = Color3.fromRGB(255, 255, 255)
 	Minimize.BackgroundTransparency = 1
-	Minimize.Font = Enum.Font.GothamBold
-	Minimize.TextSize = 18
+	Minimize.Text = "-"
+	Minimize.TextColor3 = Color3.fromRGB(200, 200, 200)
+	Minimize.Font = Enum.Font.SourceSansBold
+	Minimize.TextSize = 22
 
-	local TabButtons = Instance.new("Frame", MainFrame)
-	TabButtons.Size = UDim2.new(0, 110, 1, -35)
-	TabButtons.Position = UDim2.new(0, 0, 0, 35)
-	TabButtons.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+	local Close = Instance.new("TextButton", TitleBar)
+	Close.Size = UDim2.new(0, 30, 1, 0)
+	Close.Position = UDim2.new(1, -30, 0, 0)
+	Close.BackgroundTransparency = 1
+	Close.Text = "X"
+	Close.TextColor3 = Color3.fromRGB(200, 200, 200)
+	Close.Font = Enum.Font.SourceSansBold
+	Close.TextSize = 22
+
+	-- Conteúdo
+	local MainContent = Instance.new("Frame", MainFrame)
+	MainContent.Size = UDim2.new(1, 0, 1, -40)
+	MainContent.Position = UDim2.new(0, 0, 0, 40)
+	MainContent.BackgroundTransparency = 1
+	MainContent.Name = "MainContent"
+
+	local TabButtons = Instance.new("Frame", MainContent)
+	TabButtons.Size = UDim2.new(0, 120, 1, 0)
+	TabButtons.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 	TabButtons.BorderSizePixel = 0
 
 	local TabLayout = Instance.new("UIListLayout", TabButtons)
 	TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
-	TabLayout.Padding = UDim.new(0, 2)
+	TabLayout.Padding = UDim.new(0, 5)
 
-	local ContentFrame = Instance.new("Frame", MainFrame)
-	ContentFrame.Size = UDim2.new(1, -110, 1, -35)
-	ContentFrame.Position = UDim2.new(0, 110, 0, 35)
-	ContentFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	local ContentFrame = Instance.new("Frame", MainContent)
+	ContentFrame.Size = UDim2.new(1, -120, 1, 0)
+	ContentFrame.Position = UDim2.new(0, 120, 0, 0)
+	ContentFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 	ContentFrame.BorderSizePixel = 0
 	ContentFrame.Name = "ContentFrame"
-	ContentFrame.ClipsDescendants = true
 
 	local Tabs = {}
-
-	local Minimized = false
-	Minimize.MouseButton1Click:Connect(function()
-		Minimized = not Minimized
-		TabButtons.Visible = not Minimized
-		ContentFrame.Visible = not Minimized
-	end)
+	local SelectedLine = nil
 
 	function MyUILib:CreateTab(tabName)
 		local Button = Instance.new("TextButton", TabButtons)
 		Button.Size = UDim2.new(1, 0, 0, 30)
 		Button.Text = tabName
-		Button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+		Button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 		Button.TextColor3 = Color3.fromRGB(255, 255, 255)
 		Button.BorderSizePixel = 0
-		Button.Font = Enum.Font.Gotham
-		Button.TextSize = 16
+		Button.Font = Enum.Font.SourceSans
+		Button.TextSize = 18
 
 		local Line = Instance.new("Frame", Button)
-		Line.Size = UDim2.new(1, 0, 0, 2)
-		Line.Position = UDim2.new(0, 0, 1, -2)
-		Line.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
-		Line.BorderSizePixel = 0
+		Line.Size = UDim2.new(0, 4, 1, 0)
+		Line.Position = UDim2.new(0, 0, 0, 0)
+		Line.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
 		Line.Visible = false
 
 		local Tab = Instance.new("Frame", ContentFrame)
@@ -113,7 +104,7 @@ function MyUILib:CreateWindow(config)
 		Tab.Name = tabName
 
 		local Layout = Instance.new("UIListLayout", Tab)
-		Layout.Padding = UDim.new(0, 10)
+		Layout.Padding = UDim.new(0, 5)
 		Layout.SortOrder = Enum.SortOrder.LayoutOrder
 
 		Button.MouseButton1Click:Connect(function()
@@ -122,9 +113,9 @@ function MyUILib:CreateWindow(config)
 					v.Visible = false
 				end
 			end
-			for _, v in pairs(TabButtons:GetChildren()) do
-				if v:IsA("TextButton") then
-					local l = v:FindFirstChildOfClass("Frame")
+			for _, b in pairs(TabButtons:GetChildren()) do
+				if b:IsA("TextButton") then
+					local l = b:FindFirstChildOfClass("Frame")
 					if l then l.Visible = false end
 				end
 			end
@@ -136,37 +127,58 @@ function MyUILib:CreateWindow(config)
 
 		local tabFunctions = {}
 
-		function tabFunctions:AddButton(text, callback)
-			local Btn = Instance.new("TextButton", Tab)
-			Btn.Size = UDim2.new(1, -10, 0, 35)
-			Btn.Position = UDim2.new(0, 5, 0, 0)
-			Btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-			Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-			Btn.Text = text
-			Btn.Font = Enum.Font.Gotham
-			Btn.TextSize = 16
-			Btn.BorderSizePixel = 0
-
-			local corner = Instance.new("UICorner", Btn)
-			corner.CornerRadius = UDim.new(0, 6)
-
-			Btn.MouseButton1Click:Connect(callback)
-		end
-
 		function tabFunctions:AddSection(title)
-			local SectionLabel = Instance.new("TextLabel", Tab)
-			SectionLabel.Size = UDim2.new(1, -10, 0, 20)
-			SectionLabel.Position = UDim2.new(0, 5, 0, 0)
-			SectionLabel.Text = title
-			SectionLabel.Font = Enum.Font.GothamBold
-			SectionLabel.TextSize = 16
-			SectionLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
-			SectionLabel.BackgroundTransparency = 1
-			SectionLabel.TextXAlignment = Enum.TextXAlignment.Left
+			local Section = Instance.new("Frame", Tab)
+			Section.Size = UDim2.new(1, -10, 0, 30)
+			Section.BackgroundTransparency = 1
+			Section.AutomaticSize = Enum.AutomaticSize.Y
+
+			local Label = Instance.new("TextLabel", Section)
+			Label.Size = UDim2.new(1, 0, 0, 20)
+			Label.BackgroundTransparency = 1
+			Label.Text = title
+			Label.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Label.Font = Enum.Font.SourceSansBold
+			Label.TextSize = 20
+			Label.TextXAlignment = Enum.TextXAlignment.Left
+
+			local SectionLayout = Instance.new("UIListLayout", Section)
+			SectionLayout.Padding = UDim.new(0, 5)
+			SectionLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+			local sectionFunctions = {}
+
+			function sectionFunctions:AddButton(text, callback)
+				local Btn = Instance.new("TextButton", Section)
+				Btn.Size = UDim2.new(1, 0, 0, 30)
+				Btn.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+				Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+				Btn.Text = text
+				Btn.Font = Enum.Font.SourceSans
+				Btn.TextSize = 18
+				Btn.BorderSizePixel = 0
+
+				Btn.MouseButton1Click:Connect(callback)
+			end
+
+			return sectionFunctions
 		end
 
 		return tabFunctions
 	end
+
+	-- Minimizar
+	local minimized = false
+	Minimize.MouseButton1Click:Connect(function()
+		minimized = not minimized
+		MainContent.Visible = not minimized
+		MainFrame.BackgroundTransparency = minimized and 1 or 0
+	end)
+
+	-- Fechar
+	Close.MouseButton1Click:Connect(function()
+		ScreenGui:Destroy()
+	end)
 
 	return MyUILib
 end
