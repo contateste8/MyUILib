@@ -1,0 +1,113 @@
+local MyUILib = {}
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+function MyUILib:CreateWindow(config)
+	local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+	ScreenGui.Name = config.Name or "MyUI"
+	ScreenGui.ResetOnSpawn = false
+
+	local MainFrame = Instance.new("Frame", ScreenGui)
+	MainFrame.Size = UDim2.new(0, 500, 0, 350)
+	MainFrame.Position = UDim2.new(0.5, -250, 0.5, -175)
+	MainFrame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+	MainFrame.BackgroundTransparency = 0.2
+	MainFrame.BorderSizePixel = 0
+	MainFrame.Name = "MainFrame"
+	MainFrame.Active = true
+	MainFrame.Draggable = true
+	MainFrame.ClipsDescendants = true
+	MainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+
+	local UICorner = Instance.new("UICorner", MainFrame)
+	UICorner.CornerRadius = UDim.new(0, 12)
+
+	local TabButtons = Instance.new("Frame", MainFrame)
+	TabButtons.Size = UDim2.new(0, 120, 1, 0)
+	TabButtons.Position = UDim2.new(0, 0, 0, 0)
+	TabButtons.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	TabButtons.BackgroundTransparency = 0.3
+	TabButtons.BorderSizePixel = 0
+
+	local TabCorner = Instance.new("UICorner", TabButtons)
+	TabCorner.CornerRadius = UDim.new(0, 12)
+
+	local TabLayout = Instance.new("UIListLayout", TabButtons)
+	TabLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	TabLayout.Padding = UDim.new(0, 6)
+
+	local ContentFrame = Instance.new("Frame", MainFrame)
+	ContentFrame.Size = UDim2.new(1, -130, 1, -20)
+	ContentFrame.Position = UDim2.new(0, 125, 0, 10)
+	ContentFrame.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	ContentFrame.BackgroundTransparency = 0.1
+	ContentFrame.BorderSizePixel = 0
+	ContentFrame.Name = "ContentFrame"
+
+	local ContentCorner = Instance.new("UICorner", ContentFrame)
+	ContentCorner.CornerRadius = UDim.new(0, 12)
+
+	local Tabs = {}
+
+	function MyUILib:CreateTab(tabName)
+		local Button = Instance.new("TextButton", TabButtons)
+		Button.Size = UDim2.new(1, -10, 0, 35)
+		Button.Text = tabName
+		Button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+		Button.BackgroundTransparency = 0.2
+		Button.TextColor3 = Color3.fromRGB(255, 255, 255)
+		Button.BorderSizePixel = 0
+		Button.Font = Enum.Font.Gotham
+		Button.TextSize = 16
+
+		local BtnCorner = Instance.new("UICorner", Button)
+		BtnCorner.CornerRadius = UDim.new(0, 8)
+
+		local Tab = Instance.new("Frame", ContentFrame)
+		Tab.Size = UDim2.new(1, 0, 1, 0)
+		Tab.BackgroundTransparency = 1
+		Tab.Visible = false
+		Tab.Name = tabName
+
+		local Layout = Instance.new("UIListLayout", Tab)
+		Layout.Padding = UDim.new(0, 10)
+		Layout.SortOrder = Enum.SortOrder.LayoutOrder
+
+		Button.MouseButton1Click:Connect(function()
+			for _, v in pairs(ContentFrame:GetChildren()) do
+				if v:IsA("Frame") then
+					v.Visible = false
+				end
+			end
+			Tab.Visible = true
+		end)
+
+		Tabs[tabName] = Tab
+
+		local tabFunctions = {}
+
+		function tabFunctions:AddButton(text, callback)
+			local Btn = Instance.new("TextButton", Tab)
+			Btn.Size = UDim2.new(1, -20, 0, 35)
+			Btn.Position = UDim2.new(0, 10, 0, 0)
+			Btn.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+			Btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+			Btn.Text = text
+			Btn.Font = Enum.Font.GothamSemibold
+			Btn.TextSize = 15
+			Btn.BorderSizePixel = 0
+
+			local BtnCorner = Instance.new("UICorner", Btn)
+			BtnCorner.CornerRadius = UDim.new(0, 8)
+
+			Btn.MouseButton1Click:Connect(callback)
+		end
+
+		return tabFunctions
+	end
+
+	return MyUILib
+end
+
+return MyUILib
